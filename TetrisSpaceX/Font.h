@@ -1,6 +1,6 @@
 #pragma once
+#include "Graphics.h"
 
-template<class Graphics>
 class Font
 {
   public:

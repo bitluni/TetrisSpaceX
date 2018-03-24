@@ -1,6 +1,6 @@
 #pragma once
+#include "Graphics.h"
 
-template<class Graphics>
 class Image
 {
   public:
@@ -8,11 +8,18 @@ class Image
   int yres;
   const unsigned char *pixels;
   
-  Image(int xres_, int yres_, const unsigned char *pixels_)
-    :xres(xres_),
-    yres(yres_),
-    pixels(pixels_)
+  void init(int xres, int yres, const unsigned char *pixels)
   {
+    this->xres = xres;
+    this->yres = yres;
+    this->pixels = pixels;    
+  }
+
+  Image(){};
+ 
+  Image(int xres, int yres, const unsigned char *pixels)
+  {
+    init(xres, yres, pixels);
   }
 
   ~Image()

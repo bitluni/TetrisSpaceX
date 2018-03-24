@@ -1,8 +1,7 @@
 #pragma once
-#include "Sprites.h"
 #include "Field.h"
+#include "Sprites.h"
 
-template<class Graphics>
 class Block
 {
   public:
@@ -11,14 +10,16 @@ class Block
   int yPos;
   int orientation;
   bool active;
-  Sprites<Graphics> &sprites;
+  Sprites *sprites;
+
+  Block(){}
   
-  Block(Sprites<Graphics> &blockSprites)
-    :sprites(blockSprites)
+  void init(Sprites &blockSprites)
   {
     active = false;
+    sprites = &blockSprites;    
   }
-
+  
   void getNext()
   {
     type = rand() % 6;
@@ -103,7 +104,7 @@ class Block
     active = true;
   }
 
-  void draw(Graphics &g)
+  void draw(Graphics &g, int x0, int y0)
   {
     int dx;
     int dy;
@@ -125,10 +126,10 @@ class Block
     for(int y = 0; y < yres; y++)
       for(int x = 0; x < xres; x++)
         if(parts[y * xres + x])
-          sprites.draw(g, bx + x * 8, by + y * 8, parts[y * xres + x]);
+          sprites->draw(g, parts[y * xres + x], x0 + bx + x * 8, y0 + by + y * 8);
   }
 
-  bool test(Field<Graphics> &field, int xt, int yt, int o)
+  bool test(Field &field, int xt, int yt, int o)
   {
     int dx;
     int dy;
@@ -142,7 +143,7 @@ class Block
     return false;
   }
   
-  void place(Field<Graphics> &field)
+  void place(Field &field)
   {
     int dx;
     int dy;
@@ -181,7 +182,7 @@ class Block
     xPos++;
   }
   
-  void operator=(Block<Graphics> &b)
+  void operator=(Block &b)
   {
     type = b.type;
     active = true;

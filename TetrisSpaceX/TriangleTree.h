@@ -1,10 +1,12 @@
-template <class Graphics>
+#pragma once
+#include "Graphics.h"
+
 class TriangleTree
 {
   public:
   short *v[3];
   int z;  
-  TriangleTree<Graphics> *left, *right;
+  TriangleTree *left, *right;
   int depth;
   char color;
 
