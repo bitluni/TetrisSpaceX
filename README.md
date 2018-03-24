@@ -2,6 +2,8 @@
 
 This project is a Tetris clone with Space X endings.
 The current state is playable with one and two players.
+Check out this playlis for the project details:
+https://www.youtube.com/playlist?list=PLjUbKCHhzPEzCm2_KFAICIN-7QTap_s72
 
 # License
 
