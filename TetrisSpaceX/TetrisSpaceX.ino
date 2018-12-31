@@ -32,11 +32,15 @@ AudioOutput audioOutput;
 
 //PAL MAX, half: 324x268 full: 648x536
 //NTSC MAX, half: 324x224 full: 648x448
-const int XRES = 320;
+
+//Resolution factor use 2 or 3. (3 will result second player field to be off screen)
+const int resFactor = 3;
+
+const int XRES = 160 * (4 - resFactor);
 const int YRES = 144;
 
 Graphics graphics(XRES, YRES);
-CompositeOutput composite(CompositeOutput::NTSC, XRES * 2, YRES * 2);
+CompositeOutput composite(CompositeOutput::PAL, XRES * resFactor, YRES * resFactor);
 
 Font font(8, 8, tetrisFont::pixels);
 
@@ -80,7 +84,11 @@ void compositeCore(void *data)
 {
   while (true)
   {
-    composite.sendFrameHalfResolution(&graphics.frame);
+    if(resFactor == 2)
+      composite.sendFrameHalfResolution(&graphics.frame);
+    else
+    if(resFactor == 3)
+      composite.sendFrameThirdResolution(&graphics.frame);
     frame++;
   }
 }
@@ -114,7 +122,10 @@ void playMusic(int track = -1, bool loop = true)
 {
   stopMusic();
   if(track == -1)
-    musicId = music.play(audioSystem, musicSelectTrack[musicSelect], 1, 1, loop);
+  {
+    if(musicSelectTrack[musicSelect] != -1)
+      musicId = music.play(audioSystem, musicSelectTrack[musicSelect], 1, 1, loop);
+  }
   else
     musicId = music.play(audioSystem, track, 1, 1, loop);
 }

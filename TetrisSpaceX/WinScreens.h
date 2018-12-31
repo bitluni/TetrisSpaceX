@@ -59,20 +59,20 @@ void start(int t)
   }
   if(t == 30)
   {
-    sounds.play(audioSystem, 12, 1, 1, true);
+    sounds.play(audioSystem, 12, 0.3, 1, true);
   }
   if(t == 40)
   {
     sounds.stop(audioSystem);
-    sounds.play(audioSystem, 12, 1, 1, true);
-    sounds.play(audioSystem, 12, 0.5, 1.5, true);        
+    sounds.play(audioSystem, 12, 0.3, 1, true);
+    sounds.play(audioSystem, 12, 0.3, 1.5, true);        
   }
   if(t == 50)
   {
     sounds.stop(audioSystem);
-    sounds.play(audioSystem, 12, 1, 1.5, true);        
-    sounds.play(audioSystem, 12, 1, 1.6, true);
-    sounds.play(audioSystem, 12, 1, 1.7, true);        
+    sounds.play(audioSystem, 12, 0.3, 1.5, true);        
+    sounds.play(audioSystem, 12, 0.3, 1.6, true);
+    sounds.play(audioSystem, 12, 0.3, 1.7, true);        
   }
 }
 
@@ -81,8 +81,8 @@ void landing1(int t)
   if(t == 0)
   {
     sounds.stop(audioSystem);
-    sounds.play(audioSystem, 12, 1, 1.8, true);
-    sounds.play(audioSystem, 12, 1, 2.0, true);
+    sounds.play(audioSystem, 12, 0.3, 1.8, true);
+    sounds.play(audioSystem, 12, 0.3, 2.0, true);
   }
   int x = (graphics.xres - 160) / 2;
   int y = (graphics.yres - 144) / 2;
@@ -109,7 +109,7 @@ void landing1(int t)
   if(t == 250)
   {
     sounds.stop(audioSystem);
-    sounds.play(audioSystem, 12, 1, 2.0, true);
+    sounds.play(audioSystem, 12, 0.3, 2.0, true);
   }
   if(t == 270)
     sounds.stop(audioSystem);
@@ -127,7 +127,7 @@ void landing2(int t)
   if(t == 0)
   {
     sounds.stop(audioSystem);
-    sounds.play(audioSystem, 12, 1, 2.0, true);
+    sounds.play(audioSystem, 12, 0.3, 2.0, true);
   }
   if(t == 250)
     sounds.stop(audioSystem);
@@ -177,7 +177,7 @@ void mars(int t)
   rocket.draw(graphics, 15, x - 100 + t, 150 - t / 4);
       
   graphics.setTextColor(40, -1);
-  graphics.setCursor(96, 24);
+  graphics.setCursor(graphics.xres / 2 - 8 * 8, 24);
   char d[] = "CONGRATULATIONS!";
   char c[17];
   int i = 0;

@@ -194,7 +194,7 @@ class CompositeOutput
       line[i++^1] = value << 8;
   }
 
-  void fillLine(char *pixels)
+  void fillLineHalf(char *pixels)
   {
     int i = 0;
     fillValues(i, levelSync, samplesSync);
@@ -204,7 +204,24 @@ class CompositeOutput
     {
       short pix = (levelBlack + pixels[x]) << 8;
       line[i++^1] = pix;
-      line[i++^1]   = pix;
+      line[i++^1] = pix;
+    }
+    fillValues(i, levelBlack, samplesBlackRight);
+    fillValues(i, levelBlank, samplesBack);
+  }
+
+  void fillLineThird(char *pixels)
+  {
+    int i = 0;
+    fillValues(i, levelSync, samplesSync);
+    fillValues(i, levelBlank, samplesBlank);
+    fillValues(i, levelBlack, samplesBlackLeft);
+    for(int x = 0; x < targetXres / 3; x++)
+    {
+      short pix = (levelBlack + pixels[x]) << 8;
+      line[i++^1] = pix;
+      line[i++^1] = pix;
+      line[i++^1] = pix;
     }
     fillValues(i, levelBlack, samplesBlackRight);
     fillValues(i, levelBlank, samplesBack);
@@ -255,7 +272,7 @@ class CompositeOutput
     for(int y = 0; y < targetYresEven; y++)
     {
       char *pixels = (*frame)[y];
-      fillLine(pixels);
+      fillLineHalf(pixels);
       sendLine();
     }
     fillBlank();
@@ -284,7 +301,68 @@ class CompositeOutput
     for(int y = 0; y < targetYresOdd; y++)
     {
       char *pixels = (*frame)[y];
-      fillLine(pixels);
+      fillLineHalf(pixels);
+      sendLine();
+    }
+    fillBlank();
+    for(int y = 0; y < linesOddBlankBottom; y++)
+      sendLine();
+    i = 0;
+    fillHalfBlank(i); fillShort(i);
+    sendLine(); 
+    i = 0;
+    fillShort(i); fillShort(i);
+    sendLine(); sendLine();
+  }
+  
+  void sendFrameThirdResolution(char ***frame)
+  {
+    //Even Halfframe    
+    int i = 0;
+    fillLong(i); fillLong(i);
+    sendLine(); sendLine();
+    i = 0;
+    fillLong(i); fillShort(i);
+    sendLine();
+    i = 0;
+    fillShort(i); fillShort(i);
+    sendLine(); sendLine();
+    fillBlank();
+    for(int y = 0; y < linesEvenBlankTop; y++)
+      sendLine();
+    for(int y = 0; y < targetYresEven; y++)
+    {
+      char *pixels = (*frame)[y * 2 / 3];
+      fillLineThird(pixels);
+      sendLine();
+    }
+    fillBlank();
+    for(int y = 0; y < linesEvenBlankBottom; y++)
+      sendLine();
+    i = 0;
+    fillShort(i); fillShort(i);
+    sendLine(); sendLine();
+    i = 0;
+    fillShort(i); 
+    //odd half frame
+    fillLong(i);
+    sendLine(); 
+    i = 0;
+    fillLong(i); fillLong(i);
+    sendLine(); sendLine();
+    i = 0;
+    fillShort(i); fillShort(i);
+    sendLine(); sendLine();
+    fillShort(i); fillValues(i, levelBlank, samplesLine / 2);
+    sendLine();
+
+    fillBlank();
+    for(int y = 0; y < linesOddBlankTop; y++)
+      sendLine();
+    for(int y = 0; y < targetYresOdd; y++)
+    {
+      char *pixels = (*frame)[(y * 2 + 1) / 3];
+      fillLineThird(pixels);
       sendLine();
     }
     fillBlank();
